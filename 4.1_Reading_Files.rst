@@ -1,0 +1,347 @@
+
+
+
+.. raw:: html
+
+   <h1 align="center">
+
+Reading Files Python
+
+.. raw:: html
+
+   </h1>
+
+
+
+This notebook will provide information regarding reading **.txt** files.
+
+Table of Contents
+-----------------
+
+.. raw:: html
+
+   <div class="alert alert-block alert-info" style="margin-top: 20px">
+
+.. raw:: html
+
+   <li>
+
+Reading Text Files
+
+.. raw:: html
+
+   </li>
+
+.. raw:: html
+
+   <p>
+
+.. raw:: html
+
+   </p>
+
+Estimated Time Needed: 15 min
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <hr>
+
+.. raw:: html
+
+   <h2 align="center">
+
+Reading Text Files
+
+.. raw:: html
+
+   </h2>
+
+One way to read or write a file in Python is to use the
+built-in \ **open** function. The **open** function provides a **File
+object** that contains the methods and attributes you need in order to
+read, save, and manipulate the file. In this notebook, we will only
+cover **.txt** files. The first parameter you need is the file path and
+the file name. An example is shown in **Figure 1**:
+
+.. raw:: html
+
+   <h4 align="center">
+
+::
+
+    Figure 1: Labeled Syntax of a file object.  
+
+.. raw:: html
+
+   </h4>
+
+The mode argument is optional and the default value is **r**. In this
+notebook we only cover two modes: 
+
+.. raw:: html
+
+   <li>
+
+**r** Read mode for reading files
+
+.. raw:: html
+
+   </li>
+
+.. raw:: html
+
+   <li>
+
+**w** Write mode for writing files
+
+.. raw:: html
+
+   </li>
+
+For the next example, we will use the text file **Example1.txt**. The
+file is shown in figure 2:
+
+.. raw:: html
+
+   <h4 align="center">
+
+::
+
+    Figure 2: The text file "Example1.txt".
+
+.. raw:: html
+
+   </h4>
+
+First we load the file into the directory:
+
+.. code:: python
+
+    !wget -O /resources/data/Example1.txt https://s3-api.us-geo.objectstorage.softlayer.net/cf-courses-data/CognitiveClass/PY0101EN/labs/example1.txt
+
+
+
+We read the file:
+
+.. code:: python
+
+    example1="/resources/data/Example1.txt"
+    file1 = open(example1,"r")
+
+We can view the attributes of the file.
+
+The name of the file:
+
+.. code:: python
+
+    file1.name
+
+The mode the file object is in:
+
+.. code:: python
+
+    file1.mode
+
+We can read the file and assign it to a variable :
+
+.. code:: python
+
+    FileContent=file1.read()
+    FileContent
+
+The “/n” tells python that there is a new line.
+
+We can print the file:
+
+.. code:: python
+
+    print(FileContent)
+
+The file is of type string:
+
+.. code:: python
+
+    type(FileContent)
+
+We must close the file object:
+
+.. code:: python
+
+    file1.close()
+
+.. code:: python
+
+    file1
+
+.. raw:: html
+
+   <h3>
+
+A Better Way to Open a File
+
+.. raw:: html
+
+   </h3>
+
+Using the **with** statement is better practice, it automatically closes
+the file even if the code encounters an exception. The code will run
+everything in the indent block then close the file object.
+
+.. code:: python
+
+    with open(example1,"r") as file1:
+        FileContent=file1.read()
+        print(FileContent)
+
+The file object is closed, you can verify it by running the following
+cell:
+
+.. code:: python
+
+    file1.closed
+
+We can see the info in the file:
+
+.. code:: python
+
+    print(FileContent)
+
+The syntax is a little confusing as the file object is after the **as**
+statement. We also don’t explicitly close the file. Therefore we
+summarise the steps in a figure:
+
+.. raw:: html
+
+   <h4 align="center">
+
+::
+
+    The syntax for opening a file using a 'with' statement.
+
+.. raw:: html
+
+   </h4>
+
+.. code:: python
+
+    with open(example1,"r") as file1:
+        FileContent=file1.readlines()
+        print(FileContent)
+
+We don’t have to read the entire file, for example, we can read the
+first 4 characters by entering three as a parameter to the method
+**.read()**:
+
+.. code:: python
+
+    with open(example1,"r") as file1:
+        print(file1.read(4))
+
+Once the method **.read(4)** is called the first 4 characters are
+called. If we call the method again, the next 4 characters are called.
+The output for the following cell will demonstrate the process for
+different inputs to the method **read() **:
+
+.. code:: python
+
+    with open(example1,"r") as file1:
+        print(file1.read(4))
+        print(file1.read(4))
+        print(file1.read(7))
+        print(file1.read(15))
+
+
+The process is illustrated in the below figure, and each colour
+represents the part of the file read after the method **read()** is
+called:
+
+.. raw:: html
+
+   <h4 align="center">
+
+::
+
+     Illustration using the method **.read()** to call different characters 
+
+.. raw:: html
+
+   </h4>
+
+Here is an example using different values:
+
+.. code:: python
+
+    with open(example1,"r") as file1:
+        print(file1.read(16))
+        print(file1.read(5))
+        print(file1.read(9))
+
+
+We can also read one line of the file at a time using the method
+**readline()**:
+
+.. code:: python
+
+     with open(example1,"r") as file1:
+        print("first line: " + file1.readline())
+
+
+We can use a loop to iterate through each line:
+
+.. code:: python
+
+     with open(example1,"r") as file1:
+            i=0;
+            for line in file1:
+                print("Iteration" ,str(i),":",line)
+                i=i+1;
+
+We can use the method **readline()** to save the text file to a list:
+
+.. code:: python
+
+    with open(example1,"r") as file1:
+        FileasList=file1.readlines()
+
+Each element of the list corresponds to a line of text:
+
+.. code:: python
+
+    FileasList[0]
+
+.. code:: python
+
+    FileasList[1]
+
+.. code:: python
+
+    FileasList[2]
+
+
+
+.. raw:: html
+
+   <hr>
+
+About the Author:
+~~~~~~~~~~~~~~~~~
+
+`Joseph
+Santarcangelo <https://www.linkedin.com/in/joseph-s-50398b136/>`__ has a
+PhD in Electrical Engineering, his research focused on using machine
+learning, signal processing, and computer vision to determine how videos
+impact human cognition. Joseph has been working for IBM since he
+completed his PhD.
+
+.. raw:: html
+
+   <hr>
+
+Copyright © 2017
+`cognitiveclass.ai <cognitiveclass.ai?utm_source=bducopyrightlink&utm_medium=dswb&utm_campaign=bdu>`__.
+This notebook and its source code are released under the terms of the
+`MIT License <https://bigdatauniversity.com/mit-license/>`__.​
